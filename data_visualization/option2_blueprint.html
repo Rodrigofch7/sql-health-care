@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rodrigo França Chaves — Data & Cities (Blueprint)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14110F;
+    --card:rgba(31,26,23,0.7);
+    --maroon:#B23A48;
+    --maroon-bright:#C9505E;
+    --maroon-tint:#2A1A1C;
+    --text:#F2EDE6;
+    --text-soft:#C4BCB2;
+    --text-mute:#8A8178;
+    --border:#2E2823;
+    --grid-line:rgba(178,58,72,0.06);
+    --max-w: 760px;
+    --serif:'Source Serif 4', Georgia, serif;
+    --sans:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  /* architectural blueprint grid */
+  .grid-bg{
+    position:fixed; inset:0; z-index:-2; pointer-events:none;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    transition: transform 0.2s ease-out;
+  }
+  /* glow that follows cursor */
+  .grid-glow{
+    position:fixed; width:500px; height:500px; z-index:-1; pointer-events:none;
+    background:radial-gradient(circle, rgba(178,58,72,0.08) 0%, transparent 70%);
+    transform:translate(-50%,-50%); transition:opacity 0.3s; opacity:0;
+  }
+  a{color:var(--maroon-bright); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .wrap{max-width:var(--max-w); margin:0 auto; padding:0 24px;}
+  nav{position:sticky; top:0; z-index:10; background:rgba(20,17,15,0.8); backdrop-filter:blur(10px); border-bottom:1px solid var(--border);}
+  nav .wrap{display:flex; justify-content:space-between; align-items:center; padding:16px 24px;}
+  .nav-name{font-size:14px; font-weight:700; color:var(--text); letter-spacing:-0.01em;}
+  .nav-links{display:flex; gap:24px; list-style:none; margin:0; padding:0;}
+  .nav-links a{font-size:14px; font-weight:500; color:var(--text-soft);}
+  .nav-links a:hover{color:var(--maroon-bright);}
+  header.hero{padding:88px 0 56px;}
+  .eyebrow{font-size:13px; font-weight:700; color:var(--maroon-bright); text-transform:uppercase; letter-spacing:0.08em; margin:0 0 18px; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:24px; height:1px; background:var(--maroon-bright);}
+  h1{font-weight:800; font-size:clamp(2.2rem, 5.5vw, 3rem); line-height:1.12; margin:0 0 20px; letter-spacing:-0.025em; color:var(--text);}
+  .hero-sub{font-size:18px; color:var(--text-soft); max-width:540px; margin:0 0 32px;}
+  .btn-row{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:48px;}
+  .btn{padding:11px 20px; border-radius:6px; font-size:14px; font-weight:600; display:inline-block;}
+  .btn-primary{background:var(--maroon); color:#fff;}
+  .btn-primary:hover{background:var(--maroon-bright); text-decoration:none;}
+  .btn-secondary{border:1px solid var(--border); color:var(--text); background:rgba(20,17,15,0.5);}
+  .btn-secondary:hover{border-color:var(--maroon-bright); color:var(--maroon-bright); text-decoration:none; background:var(--maroon-tint);}
+  .stats{display:flex; gap:40px; flex-wrap:wrap; padding:28px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  .stat-num{font-size:1.7rem; font-weight:800; color:var(--maroon-bright); letter-spacing:-0.02em;}
+  .stat-label{font-size:13px; color:var(--text-mute);}
+  section{padding:56px 0; border-bottom:1px solid var(--border);}
+  section:last-of-type{border-bottom:none;}
+  h2{font-weight:800; font-size:1.5rem; margin:0 0 28px; color:var(--text); letter-spacing:-0.02em;}
+  p{margin:0 0 16px; color:var(--text-soft);}
+  .tl-item{display:grid; grid-template-columns: 110px 1fr; gap:18px; padding:20px 0; border-top:1px solid var(--border);}
+  .tl-item:first-of-type{border-top:none; padding-top:0;}
+  .tl-date{font-size:13px; color:var(--text-mute); padding-top:2px; font-weight:500;}
+  .tl-role{font-weight:700; font-size:15.5px; color:var(--text); margin:0 0 2px;}
+  .tl-org{font-size:14px; color:var(--maroon-bright); margin:0 0 8px; font-weight:600;}
+  .tl-desc{font-size:14.5px; color:var(--text-soft); margin:0;}
+  .proj-card{border:1px solid var(--border); border-radius:10px; padding:26px; margin-bottom:20px; background:var(--card); backdrop-filter:blur(4px);}
+  .proj-title{font-size:1.2rem; font-weight:700; margin:0 0 6px; color:var(--text);}
+  .proj-stack{font-size:12px; color:var(--text-mute); margin:0 0 14px; font-weight:600; letter-spacing:0.03em; text-transform:uppercase;}
+  .proj-desc{font-size:14.5px; margin:0 0 16px;}
+  .proj-stats{display:flex; gap:24px; flex-wrap:wrap; margin:0 0 18px; padding:16px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  .stat-num-sm{font-size:1.4rem; font-weight:800; color:var(--maroon-bright); display:block; line-height:1;}
+  .stat-label-sm{font-size:11px; color:var(--text-mute); text-transform:uppercase; letter-spacing:0.03em; font-weight:600;}
+  .proj-links{display:flex; gap:18px; font-size:13.5px; font-weight:600; flex-wrap:wrap;}
+  .skills-grid{display:grid; grid-template-columns: repeat(2, 1fr); gap:24px;}
+  .skill-cat-name{font-size:11.5px; color:var(--maroon-bright); text-transform:uppercase; letter-spacing:0.05em; margin:0 0 10px; font-weight:700;}
+  .skill-list{font-size:14px; color:var(--text-soft); margin:0;}
+  footer{padding:48px 0 64px;}
+  @media (max-width: 640px){header.hero{padding:56px 0 40px;} section{padding:40px 0;} .tl-item{grid-template-columns: 1fr; gap:4px;} .skills-grid{grid-template-columns: 1fr;} .nav-links{gap:16px;}}
+</style>
+</head>
+<body>
+<div class="grid-bg" id="gridBg"></div>
+<div class="grid-glow" id="gridGlow"></div>
+<nav><div class="wrap"><span class="nav-name">Rodrigo França Chaves</span><ul class="nav-links"><li><a href="#about">About</a></li><li><a href="#experience">Experience</a></li><li><a href="#projects">Work</a></li><li><a href="#contact">Contact</a></li></ul></div></nav>
+<header class="hero"><div class="wrap">
+<p class="eyebrow">Data &amp; cities — Chicago, IL</p>
+<h1>I turn messy data into decisions people can act on.</h1>
+<p class="hero-sub">Quantitative analyst working across machine learning, causal inference, and large-scale data — turning complex evidence into clear, defensible answers on housing, transit, and urban policy.</p>
+<div class="btn-row"><a href="#projects" class="btn btn-primary">View my work</a><a href="#" class="btn btn-secondary">Download CV</a><a href="#" class="btn btn-secondary">Get in touch</a></div>
+<div class="stats"><div><div class="stat-num">3</div><div class="stat-label">Countries analyzed</div></div><div><div class="stat-num">1.1M</div><div class="stat-label">Properties modeled</div></div><div><div class="stat-num">87.6%</div><div class="stat-label">Model accuracy</div></div></div>
+</div></header>
+<section id="about"><div class="wrap"><p class="eyebrow">About</p><h2>What I do</h2>
+<p>I'm a Master's candidate in Computational Analysis and Public Policy at the University of Chicago, where I work at the intersection of data science, economics, and public policy. I build models and pipelines that turn raw, messy data — satellite imagery, century-old archives, property tax records — into evidence people can actually use to make decisions.</p>
+<p>I'm also a committed cyclist — which is part of why the way cities move people, and who they're built for, is the question I keep coming back to.</p>
+</div></section>
+<section id="experience"><div class="wrap"><p class="eyebrow">Experience</p><h2>Where I've worked</h2>
+<div class="tl-item"><div class="tl-date">Summer 2026</div><div><p class="tl-role">Research Intern, DIME</p><p class="tl-org">World Bank — Washington, DC</p><p class="tl-desc">Used satellite imagery to study how a Bus Rapid Transit line reshaped urbanization in Dakar; built statistical tests on Mumbai property-tax data to detect assessment anomalies.</p></div></div>
+<div class="tl-item"><div class="tl-date">Mar 2026 — Present</div><div><p class="tl-role">Graduate Research Assistant</p><p class="tl-org">Mansueto Institute, UChicago</p><p class="tl-desc">Digitized a century of archival records via OCR and merged them with historical census data to map Chicago's industrial evolution.</p></div></div>
+</div></section>
+<section id="projects"><div class="wrap"><p class="eyebrow">Work</p><h2>Selected projects</h2>
+<div class="proj-card"><p class="proj-title">NYC Property Tax Assessment</p><p class="proj-stack">Python · LightGBM · scikit-learn</p><p class="proj-desc">An end-to-end ML pipeline classifying all 1.1M NYC properties as over-, under-, or fairly valued, using a novel peer-group labeling methodology and 138 engineered features.</p><div class="proj-stats"><div><span class="stat-num-sm">1.1M</span><span class="stat-label-sm">Properties</span></div><div><span class="stat-num-sm">87.6%</span><span class="stat-label-sm">Accuracy</span></div><div><span class="stat-num-sm">138</span><span class="stat-label-sm">Features</span></div></div></div>
+</div></section>
+<section id="skills"><div class="wrap"><p class="eyebrow">Skills</p><h2>Toolkit</h2>
+<div class="skills-grid"><div><p class="skill-cat-name">Methods</p><p class="skill-list">Causal Inference, Panel Econometrics, Machine Learning, Spatial Analysis, Remote Sensing</p></div><div><p class="skill-cat-name">Programming</p><p class="skill-list">Python, R, SQL, GIS, LaTeX</p></div></div>
+</div></section>
+<footer id="contact"><div class="wrap"><p class="eyebrow">Get in touch</p><h2>Let's talk</h2><p>Looking for full-time roles starting mid-2027 in economic consulting, applied research, and data-driven analytics.</p></div></footer>
+<script>
+  const glow = document.getElementById('gridGlow');
+  const grid = document.getElementById('gridBg');
+  window.addEventListener('mousemove', (e) => {
+    glow.style.opacity = '1';
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+    const dx = (e.clientX / window.innerWidth - 0.5) * 12;
+    const dy = (e.clientY / window.innerHeight - 0.5) * 12;
+    grid.style.transform = `translate(${dx}px, ${dy}px)`;
+  });
+  window.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+</script>
+</body></html>
