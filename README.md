@@ -100,15 +100,35 @@ erDiagram
 
 ---
 
-## Setup
+## Quick start
 
-Requires PostgreSQL. On WSL/Ubuntu, start it first with `sudo service postgresql start`.
+**Requirements:** PostgreSQL, and [`uv`](https://astral.sh/uv) (for the charts).
+On WSL/Ubuntu without systemd, start Postgres with `sudo service postgresql start`.
 
 ```bash
-# create a fresh database
-createdb healthcare
+# 1. clone
+git clone git@github.com:Rodrigofch7/sql-health-care.git
+cd sql-health-care
 
-# load the schema, then the synthetic data
+# 2. run everything: starts Postgres, (re)creates the database,
+#    loads the schema + synthetic data, and generates all charts
+./run_all.sh
+```
+
+That single command leaves you with a fully loaded `healthcare` database and
+seven chart images in [`data_visualization/`](data_visualization/). If you don't
+have `uv` yet:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### Manual setup (without the script)
+
+If you'd rather run the steps yourself, or only want the database:
+
+```bash
+createdb healthcare
 psql -d healthcare -f schema.sql
 psql -d healthcare -f seed.sql
 ```
